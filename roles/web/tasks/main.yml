@@ -1,6 +1,6 @@
 ---
 - name: install application dependent packages
-  apt: name={{ item }} update_cache={{ update_apt_cache }} state=latest
+  apt: name={{ item }} update_cache=yes state=latest
   with_items:
     - git
     - python-dev

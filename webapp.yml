@@ -1,0 +1,6 @@
+---
+- name: deploy flask web app
+  sudo: yes
+  hosts: local
+  roles:
+    - web

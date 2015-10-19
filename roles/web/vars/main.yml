@@ -1,5 +1,5 @@
 ---
-repository: https://github.com/VladimirDaniyan/moonlighty.git
+project_repository: https://github.com/VladimirDaniyan/moonlighty.git
 project_name: moonlighty
 project_path: /opt/{{ project_name }}
-requirements_file: {{ project_path }}/requirements.txt
+requirements_file: "{{ project_path }}/requirements.txt"
