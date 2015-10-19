@@ -1,0 +1,6 @@
+---
+- name: apply common configuration to linux based hosts
+  sudo: yes
+  hosts: linux
+  roles:
+    - common

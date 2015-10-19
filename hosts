@@ -1,0 +1,17 @@
+[local]
+vagrant ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
+
+[raspberry_pi]
+192.168.1.114
+
+[linux]
+
+[linux:children]
+raspberry_pi
+local
+
+[webserver]
+
+[webserver:children]
+raspberry_pi
+local

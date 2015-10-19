@@ -1,0 +1,19 @@
+---
+- name: install application dependent packages
+  apt: name={{ item }} update_cache={{ update_apt_cache }} state=latest
+  with_items:
+    - git
+    - python-dev
+    - python-setuptools
+    - python-pip
+  register: deps_installed
+
+- name: install virtualenv
+  pip: name=virtualenv state=present
+
+- name: get the flask app
+  git: repo={{ project_repository }} dest={{ project_path }}
+  when: deps_installed | success
+
+- name: setup virtualenv
+  pip: virtualenv={{ project_path }}/venv requirements={{ requirements_file }}

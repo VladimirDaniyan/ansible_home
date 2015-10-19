@@ -1,0 +1,11 @@
+---
+- name: update the apt cache
+  apt: update_cache=yes cache_valid_time=3600
+- name: install vim
+  apt: pkg=vim state=latest
+- name: install tmux
+  apt: pkg=tmux state=latest
+- name: install htop
+  apt: pkg=htop state=latest
+- name: install nethogs
+  apt: pkg=nethogs state=latest
