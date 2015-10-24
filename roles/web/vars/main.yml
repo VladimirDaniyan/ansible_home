@@ -3,3 +3,5 @@ project_repository: https://github.com/VladimirDaniyan/moonlighty.git
 project_name: moonlighty
 project_path: /opt/{{ project_name }}
 requirements_file: "{{ project_path }}/requirements.txt"
+app_group: www-data
+app_user: pi

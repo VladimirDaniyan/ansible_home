@@ -1,0 +1,14 @@
+server {
+  listen 80;
+  server_name default;
+
+  root {{ project_path }};
+
+  access_log /var/log/nignx/moonlighty_access.log;
+  error_log /var/log/nginx/moonlighty_error.log;
+
+  location / {
+  }
+}
+
+# vim: filetype=nginx

@@ -6,6 +6,7 @@
     - python-dev
     - python-setuptools
     - python-pip
+    - supervisor
   register: deps_installed
 
 - name: install virtualenv
@@ -17,3 +18,11 @@
 
 - name: setup virtualenv
   pip: virtualenv={{ project_path }}/venv requirements={{ requirements_file }}
+
+- name: copy gunicorn script for running flask app
+  template: src=templates/gunicorn.sh.j2 dest="opt/{{ project_name }}/gunicorn.sh" owner={{ app_user }} group={{ app_group }} mode=755
+
+- name: copy supervisor script
+  template: src=templates/supervisor_moonlighty.conf.j2 dest=/etc/supervisor/conf.d/moonlighty.conf
+
+- include: nginx.yml

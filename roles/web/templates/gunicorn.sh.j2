@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu
+
+name='moonlighty'
+flaskdir="$(dirname $(realpath $0))"
+socketfile="${flaskdir}/sock"
+user="$USER"
+group="{{ app_group }}"
+num_workers="{{ gun_workers }}"
+
+echo "Starting $name"
+
+# Create the run directory
+rundir="$(dirname $socketfile)"
+if [[ ! -d "$rundir" ]]; then
+  mkdir -p "$rundir"
+fi
+
+# start gunicorn
+exec gunicorn {{ project_name }}:app -b {{ app_host }}:{{ app_port }} \
+  --name "$name" \
+  --workers "$num_workers" \
+  --user="$user" --group="$group" \
+  --bind=unix:"$socketfile"
+
+# vim: filetype=sh

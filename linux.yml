@@ -3,4 +3,4 @@
   sudo: yes
   hosts: linux
   roles:
-    - common
+  - { role: common, tags: ['common-role'] }

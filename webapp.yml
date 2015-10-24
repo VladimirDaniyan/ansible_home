@@ -3,4 +3,4 @@
   sudo: yes
   hosts: local
   roles:
-    - web
+  - { role: web, tags: ['web-role'] }
