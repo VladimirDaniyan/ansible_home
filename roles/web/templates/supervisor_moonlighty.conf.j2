@@ -1,6 +1,7 @@
 [program:{{ project_name }}]
+environemt = PATH = {{ project_path }}/venv/bin
 directory= {{ project_path }}
 user = {{ app_user }}
 command = /opt/{{ project_name }}/gunicorn.sh
-stdout_logfile = /var/log/supervisord/gunicorn-stdout.log
-stderr_logfile = /var/log/supervisord/gunicorn-stderr.log
+stdout_logfile = /var/log/supervisor/gunicorn-stdout.log
+stderr_logfile = /var/log/supervisor/gunicorn-stderr.log

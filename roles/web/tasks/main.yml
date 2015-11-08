@@ -1,4 +1,5 @@
 ---
+
 - name: install application dependent packages
   apt: name={{ item }} update_cache=yes state=latest
   with_items:
@@ -9,20 +10,27 @@
     - supervisor
   register: deps_installed
 
+- include: nginx.yml
+
 - name: install virtualenv
   pip: name=virtualenv state=present
 
+- name: create project directory
+  file: path={{ project_path }} state=directory mode=0755
+
 - name: get the flask app
   git: repo={{ project_repository }} dest={{ project_path }}
-  when: deps_installed | success
+  when: deps_installed|success
 
 - name: setup virtualenv
   pip: virtualenv={{ project_path }}/venv requirements={{ requirements_file }}
 
 - name: copy gunicorn script for running flask app
-  template: src=templates/gunicorn.sh.j2 dest="opt/{{ project_name }}/gunicorn.sh" owner={{ app_user }} group={{ app_group }} mode=755
+  template: src=gunicorn.sh.j2 dest="/opt/{{ project_name }}/gunicorn.sh" mode=755
 
 - name: copy supervisor script
-  template: src=templates/supervisor_moonlighty.conf.j2 dest=/etc/supervisor/conf.d/moonlighty.conf
+  template: src=supervisor_moonlighty.conf.j2 dest=/etc/supervisor/conf.d/{{ project_name }}.conf
+  notify: restart supervisor
 
-- include: nginx.yml
+- name: start the application
+  supervisorctl: name={{ project_name }} state=started config=/etc/supervisor/conf.d/{{ project_name }}.conf

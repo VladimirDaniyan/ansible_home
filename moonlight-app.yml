@@ -1,0 +1,8 @@
+---
+
+- name: deploy flask web app
+  sudo: yes
+  hosts: local
+  roles:
+    - { role: common, tags: ['common-role'] }
+    - { role: web, tags: ['web-role'] }

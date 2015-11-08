@@ -1,7 +1,11 @@
 ---
+
 project_repository: https://github.com/VladimirDaniyan/moonlighty.git
 project_name: moonlighty
 project_path: /opt/{{ project_name }}
 requirements_file: "{{ project_path }}/requirements.txt"
-app_group: www-data
-app_user: pi
+app_group: root
+app_user: root
+app_host: 0.0.0.0
+app_port: 8080
+gun_workers: "{{ 2 * ansible_processor_cores + 1 }}"

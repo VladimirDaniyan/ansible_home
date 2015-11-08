@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-set -eu
+set -e
 
-name='moonlighty'
-flaskdir="$(dirname $(realpath $0))"
+name="{{ project_name }}"
+flaskdir=$(cd "$(dirname "$0")" && pwd)
 socketfile="${flaskdir}/sock"
-user="$USER"
+user="{{ app_user }}"
 group="{{ app_group }}"
 num_workers="{{ gun_workers }}"
 
@@ -16,6 +16,9 @@ rundir="$(dirname $socketfile)"
 if [[ ! -d "$rundir" ]]; then
   mkdir -p "$rundir"
 fi
+
+# activate virtualenv
+source ${flaskdir}/venv/bin/activate
 
 # start gunicorn
 exec gunicorn {{ project_name }}:app -b {{ app_host }}:{{ app_port }} \
