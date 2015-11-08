@@ -21,7 +21,7 @@ fi
 source ${flaskdir}/venv/bin/activate
 
 # start gunicorn
-exec gunicorn {{ project_name }}:app -b {{ app_host }}:{{ app_port }} \
+exec python  "${flaskdir}/{{ project_name }}.py" gunicorn -b {{ app_host }}:{{ app_port }} \
   --name "$name" \
   --workers "$num_workers" \
   --user="$user" --group="$group" \
