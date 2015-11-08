@@ -19,7 +19,7 @@
   file: path={{ project_path }} state=directory mode=0755
 
 - name: get the flask app
-  git: repo={{ project_repository }} dest={{ project_path }}
+  git: repo={{ project_repository }} dest={{ project_path }} force=yes
   when: deps_installed|success
 
 - name: setup virtualenv
