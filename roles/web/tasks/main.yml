@@ -16,14 +16,11 @@
   pip: name=virtualenv state=present
 
 - name: create project directory
-  file: path={{ project_path }} state=directory mode=0755
+  file: path={{ project_path }} owner={{ app_user }} group={{ app_group }} mode=0755 state=directory recurse=yes
 
 - name: get the flask app
   git: repo={{ project_repository }} dest={{ project_path }} force=yes
   when: deps_installed|success
-
-- name: change ownership on git repo
-  file: path={{ project_path }} owner={{ app_user }} group={{ app_group }} mode=0755
 
 - name: setup virtualenv
   pip: virtualenv={{ project_path }}/venv requirements={{ requirements_file }}
@@ -36,5 +33,5 @@
   template: src=supervisor_moonlighty.conf.j2 dest=/etc/supervisor/conf.d/{{ project_name }}.conf
   notify: restart supervisor
 
-- name: start the application
-  supervisorctl: name={{ project_name }} state=started config=/etc/supervisor/conf.d/{{ project_name }}.conf
+- name: start supervisor
+  service: name=supervisor state=started enabled=yes

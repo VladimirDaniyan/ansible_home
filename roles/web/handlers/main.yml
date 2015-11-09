@@ -3,9 +3,8 @@
 - name: reload nginx
   service: name=nginx state=reloaded
 
-- name: restart supervisor
-  service: name=supervisor state=restarted
-
 - name: restart application
   supervisorctl: name={{ project_name }} state=restarted config=/etc/supervisor/conf.d/{{ project_name }}.conf
 
+- name: restart supervisor
+  service: name=supervisor state=restarted
