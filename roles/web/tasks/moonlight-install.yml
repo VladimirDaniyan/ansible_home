@@ -1,10 +1,45 @@
 ---
 
+- name: remove xpad kernel module
+  modprobe: name=xpad state=absent
+  tags:
+    - kernel
+
+- name: blacklist xpad kernel module
+  kernel_blacklist: name=xpad state=present blacklist_file=/etc/modprobe.d/gamepad.conf
+  tags:
+    - kernel
+
+- name: deploy xbox controller init script
+  copy: src=xboxdrv_init dest=/etc/init.d/xboxdrv mode=0755
+  tags:
+    - copy
+
+- name: enable xboxdrv at startup
+  shell: update-rc.d xboxdrv start 90 2 3 4 5 stop 90 0 1 6
+  tags:
+    - copy
+
+- name: start xboxdrv
+  service: name=xboxdrv state=started
+  tags:
+    - service
+
+- name: copy xbox controller config
+  copy: src=xboxdrv_config dest=/etc/default/xboxdrv
+  tags:
+    - conf
+
 - name: install moonlight repo
   apt_repository: repo='deb http://archive.itimmer.nl/raspbian/moonlight jessie main' state=present
   tags:
     - package
     - repo
 
-- name: install moonlight embedded
-  apt: name=moonlight-embedded state=latest
+- name: install moonlight embedded and xboxdrv
+  apt: name="{{ item }}" state=latest force=yes
+  with_items:
+    - moonlight-embedded
+    - xboxdrv
+  tags:
+    - package
