@@ -30,6 +30,11 @@
   tags:
     - conf
 
+- name: copy xbox controller mappings
+  copy: src=xbox.conf dest=/home/pi/xbox.conf
+  tags:
+    - conf
+
 - name: install moonlight repo
   apt_repository: repo='deb http://archive.itimmer.nl/raspbian/moonlight jessie main' state=present
   tags:
