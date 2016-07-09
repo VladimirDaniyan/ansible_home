@@ -9,11 +9,16 @@
     - python-pip
     - supervisor
   register: deps_installed
+  tags:
+    - package
 
 - include: nginx.yml
 
 - name: install virtualenv
   pip: name=virtualenv state=present
+  tags:
+    - conf
+    - deploy
 
 - name: create project directory
   file: path={{ project_path }} owner={{ app_user }} group={{ app_group }} mode=0755 state=directory recurse=yes
@@ -21,17 +26,32 @@
 - name: get the flask app
   git: repo={{ project_repository }} dest={{ project_path }} force=yes
   when: deps_installed|success
+  tags:
+     - deploy
 
 - name: setup virtualenv
   pip: virtualenv={{ project_path }}/venv requirements={{ requirements_file }}
+  tags:
+    - deploy
 
 - name: copy gunicorn script for running flask app
   template: src=gunicorn.sh.j2 dest="/opt/{{ project_name }}/gunicorn.sh" mode=755 owner={{ app_user }} group={{ app_group }}
   notify: restart application
+  tags:
+    - deploy
+    - service
 
 - name: copy supervisor script
   template: src=supervisor_moonlighty.conf.j2 dest=/etc/supervisor/conf.d/{{ project_name }}.conf
   notify: restart supervisor
+  tags:
+    - deploy
+    - service
 
 - name: start supervisor
   service: name=supervisor state=started enabled=yes
+  tags:
+    - deploy
+    - service
+
+- include: moonlight-install.yml

@@ -1,9 +1,9 @@
 ---
 
 - name: install nginx
-  apt: name={{ item }} update_cache=yes state=latest
-  with_items:
-    - nginx
+  apt: name=nginx update_cache=yes state=latest
+  tags:
+    - package
 
 - name: remove nginx default site
   file: path=/etc/nginx/sites-enabled/default state=absent
@@ -17,3 +17,5 @@
 
 - name: start nginx
   service: name=nginx state=started enabled=yes
+  tags:
+    - service

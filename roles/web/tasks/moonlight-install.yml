@@ -1,0 +1,10 @@
+---
+
+- name: install moonlight repo
+  apt_repository: repo='deb http://archive.itimmer.nl/raspbian/moonlight jessie main' state=present
+  tags:
+    - package
+    - repo
+
+- name: install moonlight embedded
+  apt: name=moonlight-embedded state=latest
