@@ -8,7 +8,6 @@
     - python-setuptools
     - python-pip
     - supervisor
-  register: deps_installed
   tags:
     - package
 
@@ -25,7 +24,6 @@
 
 - name: get the flask app
   git: repo={{ project_repository }} dest={{ project_path }} force=yes
-  when: deps_installed|success
   tags:
      - deploy
 
