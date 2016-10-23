@@ -4,7 +4,7 @@ set -e
 
 name="{{ project_name }}"
 flaskdir=$(cd "$(dirname "$0")" && pwd)
-socketfile="${flaskdir}/sock"
+socketfile="${flaskdir}/{{ project_name }}.sock"
 user="{{ app_user }}"
 group="{{ app_group }}"
 num_workers="{{ gun_workers }}"

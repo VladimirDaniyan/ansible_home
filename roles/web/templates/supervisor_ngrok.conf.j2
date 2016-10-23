@@ -1,0 +1,5 @@
+[program:ngrok]
+command=/usr/local/bin/ngrok http --log stdout {{ app_port }}
+user=root
+stdout_logfile=/var/log/supervisor/ngrok_moonlight.log
+redirect_stderr=true

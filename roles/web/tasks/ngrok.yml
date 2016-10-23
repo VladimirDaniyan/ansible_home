@@ -25,20 +25,30 @@
       owner: root
       group: root
 
-  - name: run ngrok
-    shell: "/usr/local/bin/ngrok http --log stdout {{ app_port }} > /var/log/ngrok_moonlight &"
-    async: 45
-    poll: 0
+  - name: deploy supervisor config
+    template: src=supervisor_ngrok.conf.j2 dest=/etc/supervisor/conf.d/ngrok.conf
+    notify: restart supervisor
+    tags:
+      - deploy
+      - service
+
+  - meta: flush_handlers
 
   - name: get ngrok tunnel
     uri:
       url: http://localhost:4040/api/tunnels
       return_content: yes
     register: ngrok_tunnel
+    tags:
+      - deploy
+      - tunnel
 
   - name: print tunnel
     debug:
       msg: "{{ (ngrok_tunnel.content | from_json)['tunnels'][0]['public_url'] }}"
+    tags:
+      - deploy
+      - tunnel
 
   tags:
     - alexa

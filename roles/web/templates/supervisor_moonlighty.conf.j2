@@ -1,7 +1,7 @@
-[program:{{ project_name }}]
+[program:00-{{ project_name }}]
 environemt=PATH={{ project_path }}/venv/bin
 command=sudo -u {{ app_user}} /opt/{{ project_name }}/gunicorn.sh
 directory={{ project_path }}
 user={{ app_user }}
-stdout_logfile=/var/log/supervisor/gunicorn-stdout.log
+stdout_logfile=/var/log/supervisor/moonlight_gunicorn-stdout.log
 redirect_stderr=true
