@@ -1,0 +1,45 @@
+---
+
+- block:
+
+  - name: create /usr/local/bin
+    file:
+      path: /usr/local/bin
+      state: directory
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: download ngrok 2.x
+    get_url:
+      url: https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
+      dest: /tmp/ngrok.zip
+
+  - name: unpack ngrok 2.x
+    unarchive:
+      src: /tmp/ngrok.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      copy: no
+      mode: 0755
+      owner: root
+      group: root
+
+  - name: run ngrok
+    shell: "/usr/local/bin/ngrok http --log stdout {{ app_port }} > /var/log/ngrok_moonlight &"
+    async: 45
+    poll: 0
+
+  - name: get ngrok tunnel
+    uri:
+      url: http://localhost:4040/api/tunnels
+      return_content: yes
+    register: ngrok_tunnel
+
+  - name: print tunnel
+    debug:
+      msg: "{{ (ngrok_tunnel.content | from_json)['tunnels'][0]['public_url'] }}"
+
+  tags:
+    - alexa
+    - ngrok

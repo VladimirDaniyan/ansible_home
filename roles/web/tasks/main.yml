@@ -53,3 +53,6 @@
     - service
 
 - include: moonlight-install.yml
+
+- name: Include ngrok.yml
+  include: ngrok.yml

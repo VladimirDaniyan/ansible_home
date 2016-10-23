@@ -14,4 +14,4 @@ raspberry_pi
 local
 
 [raspberry_pi]
-192.168.1.131 ansible_ssh_user=pi
+192.168.1.131 ansible_ssh_user=pi ansible_ssh_pass=raspberry
